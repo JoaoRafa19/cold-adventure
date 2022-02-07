@@ -1,7 +1,7 @@
 import pygame
 import sys
 from settings import Settings
-from level import Level
+from classes.level import Level
 
 settings = Settings()
 
