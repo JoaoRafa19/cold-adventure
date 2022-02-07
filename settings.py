@@ -1,5 +1,5 @@
 import json
-from singleton import *
+from classes.singleton import *
 
 WORLD_MAP = [
     ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x",

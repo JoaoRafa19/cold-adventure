@@ -1,6 +1,7 @@
 import pygame
 import sys
 from settings import Settings
+from classes.level import Level
 
 settings = Settings()
 
@@ -11,7 +12,9 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode(
             (settings.WIDTH, settings.HEIGHT))
+        pygame.display.set_caption('Zelda')
         self.clock = pygame.time.Clock()
+        self.level = Level()
 
     def draw(self):
         self.screen.fill('Black')
@@ -24,6 +27,7 @@ class Game:
 
             # draw everything in the screen
             self.draw()
+            self.level.run()
 
             # screen update
             pygame.display.update()
