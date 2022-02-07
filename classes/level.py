@@ -30,11 +30,12 @@ class Level:
                     tile = Tile(
                         (x, y), [self.visible_sprites, self.obstacles_sprites])
                 if col == 'p':
-                    player = Player(
-                        (x, y), [self.visible_sprites])
+                    self.player = Player(
+                        (x, y), [self.visible_sprites], obstacle_sprites=self.obstacles_sprites)
 
     def run(self):
         #update and draw
         self.draw()
+        self.visible_sprites.update()
 
         pass
