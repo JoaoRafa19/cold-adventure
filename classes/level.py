@@ -10,14 +10,10 @@ class Level:
 
         # sprite group setup
 
-        self.visible_sprites = pygame.sprite.Group()
+        self.visible_sprites = YSortCameraGroup()
         self.obstacles_sprites = pygame.sprite.Group()
-
         # sprite setup
         self.create_map()
-
-    def draw(self):
-        self.visible_sprites.draw(self.display_surface)
 
     def create_map(self):
         ''' create map from WORLD_MAP '''
@@ -35,7 +31,26 @@ class Level:
 
     def run(self):
         #update and draw
-        self.draw()
         self.visible_sprites.update()
+        self.visible_sprites.custom_draw(self.player)
 
         pass
+
+class YSortCameraGroup(pygame.sprite.Group):
+    
+    def __init__(self):
+        #general setup
+        super().__init__()
+        self.display_surface = pygame.display.get_surface()
+        self.offset = pygame.math.Vector2()
+        self.half_width = self.display_surface.get_width() // 2
+        self.half_height = self.display_surface.get_height() // 2
+
+    def custom_draw(self, player):
+        
+        # getting the offset 
+        self.offset.x =  player.rect.centerx -  self.half_width
+        self.offset.y =  player.rect.centery - self.half_height
+        for sprite in self.sprites():
+            offset_pos = sprite.rect.topleft - self.offset
+            self.display_surface.blit(sprite.image, offset_pos) 
