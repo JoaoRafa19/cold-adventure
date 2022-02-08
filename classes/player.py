@@ -1,7 +1,8 @@
 import pygame
 
 from settings import *
-
+from support import *
+from os.path import join as pathjoin
 
 class Player(pygame.sprite.Sprite):
 
@@ -9,16 +10,46 @@ class Player(pygame.sprite.Sprite):
 
         super().__init__(groups)
 
-        self.image = self.get_image('./assets/eskimo/Item.png')
+        self.image = self.get_image(
+            './assets/graphics/player/down_idle/idle_down.png')
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect.inflate(-5, -26)
+
+        # movement
         self.direction = pygame.math.Vector2()
         self.speed = 5
+        self.attacking = False
+        self.atack_cooldown = 400
+        self.atack_time = None
+
+        # animation
+        self.import_player_assets()
+
         self.obstacles_sprites = obstacle_sprites
-        self.hitbox = self.rect.inflate(-5,-26)
+        
+
+    def import_player_assets(self):
+        character_path = './assets/graphics/player'
+        # animation states
+        self.animation = {'up': [], 'down': [],
+                          'left': [],
+                          'right': [],
+                          'right_idle': [],
+                          'left_idle': [],
+                          'up_idle': [],
+                          'down_idle': [],
+                          'right_attack': [],
+                          'left_attack': [],
+                          'up_attack': [],
+                          'down_attack': []
+                          }
+        for key, value in self.animation.items():
+            self.animation[key] = import_folder(pathjoin(character_path, key))  
 
     def input(self):
         keys = pygame.key.get_pressed()
 
+        # movement input
         if keys[pygame.K_LEFT]:
             self.direction.x = -1
         elif keys[pygame.K_RIGHT]:
@@ -31,6 +62,18 @@ class Player(pygame.sprite.Sprite):
             self.direction.y = 1
         else:
             self.direction.y = 0
+
+        # attack input
+        if keys[pygame.K_a] and not self.attacking:
+            print('attack')
+            self.attacking = True
+            self.atack_time = pygame.time.get_ticks()
+
+        # magic input
+        if keys[pygame.K_s] and not self.attacking:
+            self.attacking = True
+            self.atack_time = pygame.time.get_ticks()
+            print('special')
 
     def collision(self, direction):
         if direction == 'horizontal':
@@ -57,11 +100,17 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.y += self.direction.y * speed
         self.collision(direction='vertical')
         self.rect.center = self.hitbox.center
-        
 
     def update(self):
         self.input()
+        self.cooldowns()
         self.move(speed=self.speed)
+
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+        if self.attacking:
+            if current_time - self.atack_time >= self.atack_cooldown:
+                self.attacking = False
 
     def get_image(self, image: str) -> pygame.Surface:
         return pygame.transform.scale(pygame.image.load(image).convert_alpha(), (Settings().TILE_SIZE, Settings().TILE_SIZE))
