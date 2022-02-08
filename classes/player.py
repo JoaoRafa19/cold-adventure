@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 5
         self.obstacles_sprites = obstacle_sprites
+        self.hitbox = self.rect.inflate(-5,-26)
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -34,27 +35,29 @@ class Player(pygame.sprite.Sprite):
     def collision(self, direction):
         if direction == 'horizontal':
             for sprites in self.obstacles_sprites:
-                if sprites.rect.colliderect(self.rect):
+                if sprites.hitbox.colliderect(self.hitbox):
                     if self.direction.x > 0:  # moving right
-                        self.rect.right = sprites.rect.left
+                        self.hitbox.right = sprites.hitbox.left
                     elif self.direction.x < 0:  # moving left
-                        self.rect.left = sprites.rect.right
+                        self.hitbox.left = sprites.hitbox.right
         if direction == 'vertical':
             for sprite in self.obstacles_sprites:
-                if sprite.rect.colliderect(self.rect):
+                if sprite.hitbox.colliderect(self.hitbox):
                     if self.direction.y > 0:  # moving down
-                        self.rect.bottom = sprite.rect.top
+                        self.hitbox.bottom = sprite.hitbox.top
                     elif self.direction.y < 0:  # moving up
-                        self.rect.top = sprite.rect.bottom
+                        self.hitbox.top = sprite.hitbox.bottom
 
     def move(self, speed):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 
-        self.rect.x += self.direction.x * speed
+        self.hitbox.x += self.direction.x * speed
         self.collision(direction='horizontal')
-        self.rect.y += self.direction.y * speed
+        self.hitbox.y += self.direction.y * speed
         self.collision(direction='vertical')
+        self.rect.center = self.hitbox.center
+        
 
     def update(self):
         self.input()

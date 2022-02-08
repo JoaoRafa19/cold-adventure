@@ -66,4 +66,8 @@ class Settings:
         with open(self.FILE, 'w') as f:
             json.dump(self.data, f, indent=4)
             
-       
+    
+    def print_settings(self):
+        '''Print the game settings.'''
+        for k, v in self.data.items():
+            print(k + ": " + str(v))
