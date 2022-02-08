@@ -1,8 +1,9 @@
 import pygame
-from settings import WORLD_MAP, Settings
+from settings import Settings
 from classes.tiles import Tile
 from classes.player import Player
-
+from support import import_csv_layout, import_folder
+from random import choice
 
 class Level:
     def __init__(self):
@@ -16,21 +17,37 @@ class Level:
         self.create_map()
 
     def create_map(self):
-        ''' create map from WORLD_MAP '''
-        for row_index, row in enumerate(WORLD_MAP):
-            for col_index, col in enumerate(row):
-                x = col_index * Settings().TILE_SIZE
-                y = row_index * Settings().TILE_SIZE
-                if col == 'x':
-                    # rock
-                    tile = Tile(
-                        (x, y), [self.visible_sprites, self.obstacles_sprites])
-                if col == 'p':
-                    self.player = Player(
-                        (x, y), [self.visible_sprites], obstacle_sprites=self.obstacles_sprites)
+        ''' create map from csv file '''
+        layouts = {
+            'boundary': import_csv_layout('./assets/map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('./assets/map/map_Grass.csv'),
+            'object': import_csv_layout('./assets/map/map_Objects.csv'),
+        }
+        
+        graphics = {
+            'grass': import_folder('./assets/graphics/grass'),
+            'object': import_folder('./assets/graphics/objects'),
+        }
+        
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x = col_index * Settings().TILE_SIZE
+                        y = row_index * Settings().TILE_SIZE
+                        if style == 'boundary':
+                            Tile(pos=(x, y), groups=[self.obstacles_sprites], sprite_type=style)
+                        elif style == 'grass': 
+                            Tile(pos=(x, y), groups=[
+                                 self.visible_sprites, self.obstacles_sprites], sprite_type=style, surface=choice(graphics['grass']))
+                        elif style == 'object':
+                            Tile(pos=(x, y), groups=[self.visible_sprites, self.obstacles_sprites], sprite_type=style, surface=graphics['object'][int(col)])
+        self.player = Player(
+                        (1980, 1435), [self.visible_sprites], obstacle_sprites=self.obstacles_sprites)
 
     def run(self):
         #update and draw
+        self.display_surface.fill(color=(0, 0, 100))
         self.visible_sprites.update()
         self.visible_sprites.custom_draw(self.player)
 
