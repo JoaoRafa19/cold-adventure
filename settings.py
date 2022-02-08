@@ -58,11 +58,13 @@ class Settings:
         self.load_settings()
     def load_settings(self):
         '''Load the game settings from a JSON file.'''
+        print("Loading settings...")
         with open(self.FILE, 'r') as f:
             self.data = json.load(f)
             self.__dict__.update(self.data)
     def save_settings(self):
         ''' Write the game settings to a JSON file.'''
+        print("Saving settings...")
         with open(self.FILE, 'w') as f:
             json.dump(self.data, f, indent=4)
             
