@@ -18,12 +18,15 @@ class Game:
     def draw(self):
         self.screen.fill('Black')
 
+    def eventHandler(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                Settings().save_settings()
+                sys.exit()
+    
     def run(self):
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    Settings().save_settings()
-                    sys.exit()
+            self.eventHandler()
 
             # draw everything in the screen
             self.draw()
