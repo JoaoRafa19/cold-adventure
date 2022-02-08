@@ -9,6 +9,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = self.get_image(
             './assets/nature/rock_snow.png')
         self.rect = self.image.get_rect(topleft=pos)
+        
 
     def get_image(self, image: str) -> pygame.Surface:
         return pygame.transform.scale(pygame.image.load(image).convert_alpha(), (Settings().TILE_SIZE, Settings().TILE_SIZE))
