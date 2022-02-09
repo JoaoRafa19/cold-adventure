@@ -9,9 +9,10 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode(
-            (Settings().WIDTH, Settings().HEIGHT))
+        
+        self.screen = pygame.display.set_mode((Settings().WIDTH, Settings().HEIGHT))
         pygame.display.set_caption(Settings().TITLE)
+        pygame.display.set_icon(pygame.image.load('./assets/graphics/test/player.png'))
         self.clock = pygame.time.Clock()
         self.level = Level()
 

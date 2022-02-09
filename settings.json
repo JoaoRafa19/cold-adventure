@@ -4,5 +4,32 @@
     "FPS": 60,
     "TITLE": "RPJOJO",
     "VERSION": "0.0.1",
-    "TILE_SIZE": 64
+    "TILE_SIZE": 64,
+    "WEAPON_DATA" : {
+        "sword": {
+            "damage":15,
+            "cooldown":100,
+            "graphic": "../assets/graphics/wapons/sword/full.png"
+        },
+        "lance": {
+            "damage":30,
+            "cooldown":400,
+            "graphic": "../assets/graphics/wapons/lance/full.png"
+        },
+        "axe": {
+            "damage":20,
+            "cooldown":300,
+            "graphic": "../assets/graphics/wapons/axe/full.png"
+        },
+        "rapier":{
+            "damage":25,
+            "cooldown":50,
+            "graphic": "../assets/graphics/wapons/rapier/full.png"
+        }
+        ,"sai":{
+            "damage":10,
+            "cooldown":80,
+            "graphic": "../assets/graphics/wapons/sai/full.png"
+        }
+    }
 }

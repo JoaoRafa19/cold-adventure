@@ -15,6 +15,7 @@ class Settings:
             "TITLE":"",
             "VERSION":"",
             "TILE_SIZE":0,
+            "WEAPON_DATA":{},
         }
         # configuracoes
         self.HEIGHT = self.data["HEIGHT"]
@@ -23,6 +24,7 @@ class Settings:
         self.TITLE:str = self.data["TITLE"]
         self.VERSION:str = self.data["VERSION"]
         self.TILE_SIZE:int = self.data["TILE_SIZE"]
+        self.WEAPON_DATA:dict = self.data["WEAPON_DATA"]
         self.load_settings()
     def load_settings(self):
         '''Load the game settings from a JSON file.'''
@@ -30,6 +32,7 @@ class Settings:
         with open(self.FILE, 'r') as f:
             self.data = json.load(f)
             self.__dict__.update(self.data)
+        
     def save_settings(self):
         ''' Write the game settings to a JSON file.'''
         print("Saving settings...")
