@@ -4,7 +4,7 @@ from classes.tiles import Tile
 from classes.player import Player
 from support import import_csv_layout, import_folder
 from random import choice
-
+from debug import debug
 class Level:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
@@ -50,7 +50,7 @@ class Level:
         self.display_surface.fill(color=(0, 0, 100))
         self.visible_sprites.update()
         self.visible_sprites.custom_draw(self.player)
-
+        debug(info=self.player.status, y=10, x=10)
         pass
 
 class YSortCameraGroup(pygame.sprite.Group):

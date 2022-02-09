@@ -24,6 +24,8 @@ class Player(pygame.sprite.Sprite):
 
         # animation
         self.import_player_assets()
+        self.frame_index = 0
+        self.animation_speed = 0.15
         
         #status
         self.status = 'down'
@@ -40,17 +42,27 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
             self.direction.y = 0
             
-            if not 'atack' in self.status:
+            if not 'attack' in self.status:
                 if 'idle' in self.status:
                     # overwrite idle status
-                    self.status.replace('idle', 'atack')
+                    self.status.replace('_idle', '_attack')
                 else: 
                     self.status = self.status + '_attack'
         else:
             if 'attack' in self.status:
                 self.status.replace('_attack', '')
         
-
+    def animate(self):
+        ''' player animations controll '''
+        animation = self.animation[self.status]
+        
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+        #set the image
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center=self.hitbox.center)
+        
     def import_player_assets(self):
         character_path = './assets/graphics/player'
         # animation states
@@ -133,6 +145,7 @@ class Player(pygame.sprite.Sprite):
         self.input()
         self.cooldowns()
         self.get_status()
+        self.animate()
         self.move(speed=self.speed)
 
     def cooldowns(self):
