@@ -82,38 +82,39 @@ class Player(pygame.sprite.Sprite):
             self.animation[key] = import_folder(pathjoin(character_path, key))  
 
     def input(self):
-        keys = pygame.key.get_pressed()
+        if not self.attacking:
+            keys = pygame.key.get_pressed()
 
-        # movement input
-        if keys[pygame.K_LEFT]:
-            self.direction.x = -1
-            self.status = 'left'
-        elif keys[pygame.K_RIGHT]:
-            self.direction.x = 1
-            self.status = 'right'
-        else:
-            self.direction.x = 0
-            
-        if keys[pygame.K_UP]:
-            self.direction.y = -1
-            self.status = 'up'
-        elif keys[pygame.K_DOWN]:
-            self.direction.y = 1
-            self.status = 'down'
-        else:
-            self.direction.y = 0
+            # movement input
+            if keys[pygame.K_LEFT]:
+                self.direction.x = -1
+                self.status = 'left'
+            elif keys[pygame.K_RIGHT]:
+                self.direction.x = 1
+                self.status = 'right'
+            else:
+                self.direction.x = 0
+                
+            if keys[pygame.K_UP]:
+                self.direction.y = -1
+                self.status = 'up'
+            elif keys[pygame.K_DOWN]:
+                self.direction.y = 1
+                self.status = 'down'
+            else:
+                self.direction.y = 0
 
-        # attack input
-        if keys[pygame.K_a] and not self.attacking:
-            print('attack')
-            self.attacking = True
-            self.atack_time = pygame.time.get_ticks()
+            # attack input
+            if keys[pygame.K_a]:
+                print('attack')
+                self.attacking = True
+                self.atack_time = pygame.time.get_ticks()
 
-        # magic input
-        if keys[pygame.K_s] and not self.attacking:
-            self.attacking = True
-            self.atack_time = pygame.time.get_ticks()
-            print('special')
+            # magic input
+            if keys[pygame.K_s]:
+                self.attacking = True
+                self.atack_time = pygame.time.get_ticks()
+                print('special')
 
     def collision(self, direction):
         if direction == 'horizontal':
