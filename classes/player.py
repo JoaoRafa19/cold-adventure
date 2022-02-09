@@ -6,7 +6,7 @@ from os.path import join as pathjoin
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, pos, groups, obstacle_sprites):
+    def __init__(self, pos, groups, obstacle_sprites, create_atack, destroy_attack):
 
         super().__init__(groups)
 
@@ -29,28 +29,39 @@ class Player(pygame.sprite.Sprite):
         
         #status
         self.status = 'down'
-        
 
         self.obstacles_sprites = obstacle_sprites
         
+        #atack
+        self.create_atack = create_atack
+        #weapon
+        self.weapon_index = 0
+        self.weapon = list(Settings().WEAPON_DATA.keys())[self.weapon_index]
+        self.destroy_attack = destroy_attack
+        
+        #switch weapon cooldown
+        self.can_switch_weapon = True
+        self.weapon_switch_time = None
+        self.weapon_switch_cooldown = 200
+        
     def get_status(self):
         # idle status
-        if self.direction.x == 0 and self.direction.y == 0:
+        if self.direction.x == 0 and self.direction.y == 0 and not self.attacking:
             if not 'idle' in self.status and not 'attack' in self.status:
                 self.status = self.status + '_idle'
         if self.attacking:
             self.direction.x = 0
             self.direction.y = 0
             
-            if not 'attack' in self.status:
-                if 'idle' in self.status:
-                    # overwrite idle status
-                    self.status.replace('_idle', '_attack')
-                else: 
-                    self.status = self.status + '_attack'
+            if not 'attack' in self.status and not 'idle' in self.status:
+                self.status = self.status + '_attack'
+            else :
+                self.status = self.status.replace('_idle', '_attack')    
+            
         else:
             if 'attack' in self.status:
-                self.status.replace('_attack', '')
+                print('ola')
+                self.status.replace('_attack', '_idle')
         
     def animate(self):
         ''' player animations controll '''
@@ -93,8 +104,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction.x = 1
                 self.status = 'right'
             else:
-                self.direction.x = 0
-                
+                self.direction.x = 0        
             if keys[pygame.K_UP]:
                 self.direction.y = -1
                 self.status = 'up'
@@ -106,7 +116,7 @@ class Player(pygame.sprite.Sprite):
 
             # attack input
             if keys[pygame.K_a]:
-                print('attack')
+                self.create_atack()
                 self.attacking = True
                 self.atack_time = pygame.time.get_ticks()
 
@@ -114,7 +124,26 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_s]:
                 self.attacking = True
                 self.atack_time = pygame.time.get_ticks()
-                print('special')
+                
+            if keys[pygame.K_q] and self.can_switch_weapon:
+                self.can_switch_weapon = False
+                self.weapon_switch_time = pygame.time.get_ticks()
+                if self.weapon_index < len(Settings().WEAPON_DATA.keys()) - 1:
+                    self.weapon_index += 1
+                else:
+                    self.weapon_index = 0
+                self.weapon = list(Settings().WEAPON_DATA.keys())[self.weapon_index]
+            
+            if keys[pygame.K_e] and self.can_switch_weapon:
+                self.can_switch_weapon = False
+                self.weapon_switch_time = pygame.time.get_ticks()
+                if self.weapon_index > 0:
+                    self.weapon_index -= 1
+                else:
+                    self.weapon_index = len(Settings().WEAPON_DATA.keys()) - 1
+                self.weapon = list(Settings().WEAPON_DATA.keys())[
+                    self.weapon_index]
+                
 
     def collision(self, direction):
         if direction == 'horizontal':
@@ -154,6 +183,12 @@ class Player(pygame.sprite.Sprite):
         if self.attacking:
             if current_time - self.atack_time >= self.atack_cooldown:
                 self.attacking = False
+                self.destroy_attack()
+        
+        if not self.can_switch_weapon:
+            if current_time - self.weapon_switch_time >= self.weapon_switch_cooldown:
+                self.can_switch_weapon = True
+                self.weapon_switch_time = None
 
     def get_image(self, image: str) -> pygame.Surface:
         return pygame.transform.scale(pygame.image.load(image).convert_alpha(), (Settings().TILE_SIZE, Settings().TILE_SIZE))
