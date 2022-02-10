@@ -8,23 +8,7 @@ class Settings:
 
     def __init__(self):
         self.FILE = "settings.json"
-        self.data = {
-            "WIDTH":0,
-            "HEIGHT":0,
-            "FPS":0,
-            "TITLE":"",
-            "VERSION":"",
-            "TILE_SIZE":0,
-            "WEAPON_DATA":{},
-        }
-        # configuracoes
-        self.HEIGHT = self.data["HEIGHT"]
-        self.WIDTH = self.data["WIDTH"]
-        self.FPS = self.data["FPS"]
-        self.TITLE:str = self.data["TITLE"]
-        self.VERSION:str = self.data["VERSION"]
-        self.TILE_SIZE:int = self.data["TILE_SIZE"]
-        self.WEAPON_DATA:dict = self.data["WEAPON_DATA"]
+        
         self.load_settings()
     def load_settings(self):
         '''Load the game settings from a JSON file.'''
