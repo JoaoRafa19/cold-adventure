@@ -61,7 +61,8 @@ class Player(pygame.sprite.Sprite):
         else:
             if 'attack' in self.status:
                 print('ola')
-                self.status.replace('_attack', '_idle')
+                self.status = self.status.replace('_attack', '_idle')
+            
         
     def animate(self):
         ''' player animations controll '''
