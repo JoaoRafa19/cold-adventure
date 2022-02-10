@@ -20,6 +20,20 @@
         "ENERGY_COLOR": "blue",
         "UI_BORDER_COLOR_ACTIVE": "gold"
     },
+    "MAGIC_DATA" : {
+        "FLAME": {
+            "STRENGTH": 5,
+            "COST":20,
+            "GRAPHIC": "../assets/graphics/particles/flame/fire.png"
+            },
+            "HEAL":{
+                "STRENGTH": 20,
+                "COST":10,
+                "GRAPHIC": "../assets/graphics/particles/heal/heal.png"
+            }
+            
+
+    },
     "WEAPON_DATA": {
         "sword": {
             "damage": 15,

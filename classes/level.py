@@ -63,10 +63,19 @@ class Level:
                                  self.visible_sprites, self.obstacles_sprites], sprite_type=style, surface=graphics['object'][int(col)])
 
         self.player = Player(
-            (1980, 1435), [self.visible_sprites], obstacle_sprites=self.obstacles_sprites, create_atack=self.create_atack, destroy_attack=self.destroy_attack)
+            (1980, 1435), 
+            [self.visible_sprites], 
+            obstacle_sprites=self.obstacles_sprites, 
+            create_atack=self.create_atack, 
+            destroy_attack=self.destroy_attack, 
+            create_magic=self.create_magic
+            )
 
     def create_atack(self):
         self.current_atack = Weapon(self.player, [self.visible_sprites])
+
+    def create_magic(self, style, strengh, cost):
+        print(style, strengh, cost)
 
     def destroy_attack(self):
         if self.current_atack:
