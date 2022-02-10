@@ -5,30 +5,45 @@
     "TITLE": "RPJOJO",
     "VERSION": "0.0.1",
     "TILE_SIZE": 64,
-    "WEAPON_DATA" : {
+    "UI": {
+        "FONT": "./assets/graphics/font/joystix.ttf",
+        "FONT_SIZE": 18,
+        "BAR_HEIGHT": 20,
+        "HEALTH_BAR_WIDTH": 200,
+        "ENERGY_BAR_WIDTH": 140,
+        "ITEM_BOX_SIZE": 80,
+        "WATER_COLOR": "#77ddee",
+        "UI_BG_COLOR": "#222222",
+        "UI_BORDER_COLOR": "#111111",
+        "TEXT_COLOR": "#EEEEEE",
+        "HEALTH_COLOR": "red",
+        "ENERGY_COLOR": "blue",
+        "UI_BORDER_COLOR_ACTIVE": "gold"
+    },
+    "WEAPON_DATA": {
         "sword": {
-            "damage":15,
-            "cooldown":100,
+            "damage": 15,
+            "cooldown": 100,
             "graphic": "../assets/graphics/wapons/sword/full.png"
         },
         "lance": {
-            "damage":30,
-            "cooldown":400,
+            "damage": 30,
+            "cooldown": 400,
             "graphic": "../assets/graphics/wapons/lance/full.png"
         },
         "axe": {
-            "damage":20,
-            "cooldown":300,
+            "damage": 20,
+            "cooldown": 300,
             "graphic": "../assets/graphics/wapons/axe/full.png"
         },
-        "rapier":{
-            "damage":25,
-            "cooldown":50,
+        "rapier": {
+            "damage": 25,
+            "cooldown": 50,
             "graphic": "../assets/graphics/wapons/rapier/full.png"
-        }
-        ,"sai":{
-            "damage":10,
-            "cooldown":80,
+        },
+        "sai": {
+            "damage": 10,
+            "cooldown": 80,
             "graphic": "../assets/graphics/wapons/sai/full.png"
         }
     }

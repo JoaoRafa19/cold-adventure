@@ -4,12 +4,21 @@ from settings import *
 from support import *
 from os.path import join as pathjoin
 
+from collections import namedtuple
+
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, pos, groups, obstacle_sprites, create_atack, destroy_attack):
 
         super().__init__(groups)
-
+        
+        #stats
+        self.stats = {'health': 100, 'energy': 60, 'atack':10, 'magic':4, 'speed':6}
+        self.health = self.stats['health']
+        self.energy = self.stats['energy']
+        self.exp = 123
+        self.speed = self.stats['speed']
+        
         self.image = self.get_image(
             './assets/graphics/player/down_idle/idle_down.png')
         self.rect = self.image.get_rect(topleft=pos)
@@ -17,7 +26,6 @@ class Player(pygame.sprite.Sprite):
 
         # movement
         self.direction = pygame.math.Vector2()
-        self.speed = 5
         self.attacking = False
         self.atack_cooldown = 400
         self.atack_time = None
@@ -60,7 +68,7 @@ class Player(pygame.sprite.Sprite):
             
         else:
             if 'attack' in self.status:
-                print('ola')
+                
                 self.status = self.status.replace('_attack', '_idle')
             
         
@@ -96,6 +104,7 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         if not self.attacking:
             keys = pygame.key.get_pressed()
+            
 
             # movement input
             if keys[pygame.K_LEFT]:

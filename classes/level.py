@@ -14,6 +14,8 @@ from support import import_csv_layout, import_folder
 
 from random import choice
 
+from ui import UI
+
 
 class Level:
 
@@ -26,6 +28,10 @@ class Level:
         self.create_map()
         # attack sprites
         self.current_atack = None
+        
+        #user interface
+        self.ui = UI()
+        
 
     def create_map(self):
         ''' create map from csv file '''
@@ -69,12 +75,15 @@ class Level:
 
     def run(self):
     	'''update the level and draw'''
-    	self.display_surface.fill(color=(0, 0, 100))
+    	self.display_surface.fill(color=self.ui.data.WATER_COLOR)
     	self.visible_sprites.update()
     	self.visible_sprites.custom_draw(self.player)
-    	debug(info=self.player.status)
+     
+    	self.ui.display(self.player)
 
 
+    
+    
 class YSortCameraGroup(pygame.sprite.Group):
 
     def __init__(self):
