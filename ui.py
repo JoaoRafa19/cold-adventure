@@ -26,7 +26,14 @@ class UI:
             pygame.image.load(os.path.join(os.path.curdir, 'assets', 'graphics',
                          'weapons', weapon, 'full'+'.png')).convert_alpha() for weapon in settings.WEAPON_DATA.keys()]
         
-        
+        self.magic_graphics = []
+        for magic in settings.MAGIC_DATA.values():
+            old_path = magic['GRAPHIC'].split('/')
+            new_path = os.path.join(os.path.curdir, *old_path[1:])
+            image = pygame.image.load(new_path).convert_alpha()
+            self.magic_graphics.append(image)
+
+    
         self.energy_bar_rect = pygame.Rect(
             10, self.data.BAR_HEIGHT + 20, self.data.ENERGY_BAR_WIDTH, self.data.BAR_HEIGHT)
         
@@ -68,11 +75,21 @@ class UI:
         bg_rect = self.__selection_box(10, 510, has_switched)  # weapon
         weapon_surface = self.weapon_graphics[weapon_index]
         weapon_rect = weapon_surface.get_rect(center=bg_rect.center)
-        
         self.display_surface.blit(weapon_surface, weapon_rect)
+
+
+    def __magic_overlay(self, magic_index, has_switched=False):
+        bg_rect = self.__selection_box(20 + self.data.ITEM_BOX_SIZE, 510, has_switched)  # weapon
+
+        magic_surface = self.magic_graphics[magic_index]
+        
+        magic_rect = magic_surface.get_rect(center=bg_rect.center)
+        
+        self.display_surface.blit(magic_surface, magic_rect)
     
     def display(self, player):
         self.__show_bar(player.health, player.stats['health'], self.health_bar_rect, self.data.HEALTH_COLOR)
         self.__show_bar(player.energy, player.stats['energy'], self.energy_bar_rect, self.data.ENERGY_COLOR)
         self.__show_exp(player.exp)
+        self.__magic_overlay(player.magic_index, not player.can_switch_magic) # magic
         self.__weapon_overlay(player.weapon_index, not player.can_switch_weapon) # weapon
