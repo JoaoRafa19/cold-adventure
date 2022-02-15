@@ -163,10 +163,10 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_e] and self.can_switch_magic:
                 self.can_switch_magic = False
                 self.magic_switch_time = pygame.time.get_ticks()
-                if self.magic_index > 0:
-                    self.magic_index += 1
+                if self.magic_index == 0:
+                    self.magic_index = 1
                 else:
-                    self.magic_index = len(Settings().MAGIC_DATA.keys()) - 1
+                    self.magic_index = 0
                 self.magic = list(Settings().MAGIC_DATA.keys())[
                     self.magic_index]
                 
@@ -215,6 +215,11 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_weapon = True
                 self.weapon_switch_time = None
+        
+        if not self.can_switch_magic:
+            if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
+                self.can_switch_magic = True
+                self.magic_switch_time = None
 
     def get_image(self, image: str) -> pygame.Surface:
         return pygame.transform.scale(pygame.image.load(image).convert_alpha(), (Settings().TILE_SIZE, Settings().TILE_SIZE))

@@ -75,7 +75,11 @@ class Level:
         self.current_atack = Weapon(self.player, [self.visible_sprites])
 
     def create_magic(self, style, strengh, cost):
-        print(style, strengh, cost)
+        print(style)
+        print(strengh)
+        print(cost)
+        
+        pass
 
     def destroy_attack(self):
         if self.current_atack:
@@ -116,21 +120,12 @@ class YSortCameraGroup(pygame.sprite.Group):
     def custom_draw(self, player):
 
         # getting the offset
-
         self.offset.x = player.rect.centerx - self.half_width
-
         self.offset.y = player.rect.centery - self.half_height
-
         # drawing the floor
-
         floor_offset = self.floor_rect.topleft - self.offset
-
         self.display_surface.blit(self.floor_surface, floor_offset)
-
         # sort the sprites by y position
-
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
-
             offset_pos = sprite.rect.topleft - self.offset
-
             self.display_surface.blit(sprite.image, offset_pos)
