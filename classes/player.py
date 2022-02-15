@@ -44,7 +44,7 @@ class Player(pygame.sprite.Sprite):
         self.create_atack = create_atack
         #weapon
         self.weapon_index = 0
-        self.weapon = list(Settings().WEAPON_DATA.keys())[self.weapon_index]
+        self.weapon = list(settings.WEAPON_DATA.keys())[self.weapon_index]
         self.destroy_attack = destroy_attack
         
         #switch weapon cooldown
@@ -54,7 +54,7 @@ class Player(pygame.sprite.Sprite):
         
         #magic
         self.magic_index = 0
-        self.magic = list(Settings().MAGIC_DATA.keys())[self.magic_index]
+        self.magic = list(settings.MAGIC_DATA.keys())[self.magic_index]
         
         #switch magic cooldown
         self.create_magic = create_magic
@@ -144,7 +144,7 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_s]:
                 self.attacking = True
                 self.atack_time = pygame.time.get_ticks()
-                magic_data = Settings().MAGIC_DATA
+                magic_data = settings.MAGIC_DATA
                 style = list(magic_data.keys())[self.magic_index]
                 strengh = magic_data[style]['STRENGTH'] + self.stats['magic']
                 cost = magic_data[style]['COST']
@@ -154,11 +154,11 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_q] and self.can_switch_weapon:
                 self.can_switch_weapon = False
                 self.weapon_switch_time = pygame.time.get_ticks()
-                if self.weapon_index < len(Settings().WEAPON_DATA.keys()) - 1:
+                if self.weapon_index < len(settings.WEAPON_DATA.keys()) - 1:
                     self.weapon_index += 1
                 else:
                     self.weapon_index = 0
-                self.weapon = list(Settings().WEAPON_DATA.keys())[self.weapon_index]
+                self.weapon = list(settings.WEAPON_DATA.keys())[self.weapon_index]
             
             if keys[pygame.K_e] and self.can_switch_magic:
                 self.can_switch_magic = False
@@ -167,7 +167,7 @@ class Player(pygame.sprite.Sprite):
                     self.magic_index = 1
                 else:
                     self.magic_index = 0
-                self.magic = list(Settings().MAGIC_DATA.keys())[
+                self.magic = list(settings.MAGIC_DATA.keys())[
                     self.magic_index]
                 
 
@@ -222,4 +222,4 @@ class Player(pygame.sprite.Sprite):
                 self.magic_switch_time = None
 
     def get_image(self, image: str) -> pygame.Surface:
-        return pygame.transform.scale(pygame.image.load(image).convert_alpha(), (Settings().TILE_SIZE, Settings().TILE_SIZE))
+        return pygame.transform.scale(pygame.image.load(image).convert_alpha(), (settings.TILE_SIZE, settings.TILE_SIZE))

@@ -8,7 +8,7 @@ from classes.weapon import Weapon
 
 from debug import debug
 
-from settings import Settings
+from settings import settings
 
 from support import import_csv_layout, import_folder
 
@@ -48,8 +48,8 @@ class Level:
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
                     if col != '-1':
-                        x = col_index * Settings().TILE_SIZE
-                        y = row_index * Settings().TILE_SIZE
+                        x = col_index * settings.TILE_SIZE
+                        y = row_index * settings.TILE_SIZE
                         if style == 'boundary':
                             Tile(pos=(x, y), groups=[
                                  self.obstacles_sprites], sprite_type=style)

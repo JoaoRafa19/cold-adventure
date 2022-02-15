@@ -28,3 +28,6 @@ class Settings:
         '''Print the game settings.'''
         for k, v in self.data.items():
             print(k + ": " + str(v))
+
+
+settings = Settings()
