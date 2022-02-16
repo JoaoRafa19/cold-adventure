@@ -1,4 +1,5 @@
 import pygame
+import os
 import sys
 from settings import settings
 from classes.level import Level
@@ -12,7 +13,7 @@ class Game:
         
         self.screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
         pygame.display.set_caption(settings.TITLE)
-        pygame.display.set_icon(pygame.image.load('./assets/graphics/test/player.png'))
+        pygame.display.set_icon(pygame.image.load(os.path.join("assets","graphics","test","player.png")).convert_alpha())
         self.clock = pygame.time.Clock()
         self.level = Level()
 
