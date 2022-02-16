@@ -1,6 +1,7 @@
 import pygame
+import os
 import sys
-from settings import Settings
+from settings import settings
 from classes.level import Level
 
 
@@ -10,9 +11,9 @@ class Game:
     def __init__(self):
         pygame.init()
         
-        self.screen = pygame.display.set_mode((Settings().WIDTH, Settings().HEIGHT))
-        pygame.display.set_caption(Settings().TITLE)
-        pygame.display.set_icon(pygame.image.load('./assets/graphics/test/player.png'))
+        self.screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+        pygame.display.set_caption(settings.TITLE)
+        pygame.display.set_icon(pygame.image.load(os.path.join("assets","graphics","test","player.png")).convert_alpha())
         self.clock = pygame.time.Clock()
         self.level = Level()
 
@@ -22,7 +23,7 @@ class Game:
     def eventHandler(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                Settings().save_settings()
+                settings.save_settings()
                 sys.exit()
     
     def run(self):
@@ -35,7 +36,7 @@ class Game:
 
             # screen update
             pygame.display.update()
-            self.clock.tick(Settings().FPS)
+            self.clock.tick(settings.FPS)
 
 
 if __name__ == '__main__':

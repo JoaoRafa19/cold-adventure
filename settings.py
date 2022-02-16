@@ -1,5 +1,6 @@
 import json
 from classes.singleton import *
+from pprint import pprint
 
 
 
@@ -16,6 +17,7 @@ class Settings:
         with open(self.FILE, 'r') as f:
             self.data = json.load(f)
             self.__dict__.update(self.data)
+            print("Settings loaded.")
         
     def save_settings(self):
         ''' Write the game settings to a JSON file.'''
@@ -28,3 +30,6 @@ class Settings:
         '''Print the game settings.'''
         for k, v in self.data.items():
             print(k + ": " + str(v))
+
+
+settings = Settings()

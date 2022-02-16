@@ -5,6 +5,52 @@
     "TITLE": "RPJOJO",
     "VERSION": "0.0.1",
     "TILE_SIZE": 64,
+    "ENEMIE_DATA": {
+        "squid": {
+            "HEALTH": 100,
+            "EXP": 100,
+            "DAMAGE": 20,
+            "ATTACK_TYPE": "slash",
+            "ATTACK_SOUND": "../audio/attack/slash.wav",
+            "SPEED": 3,
+            "RESISTANCE": 3,
+            "ATTACK_RADIUS": 80,
+            "NOTICE_RADIUS": 360
+        },
+        "raccoon": {
+            "HEALTH": 300,
+            "EXP": 250,
+            "DAMAGE": 40,
+            "ATTACK_TYPE": "claw",
+            "ATTACK_SOUND": "../audio/attack/claw.wav",
+            "SPEED": 2,
+            "RESISTANCE": 3,
+            "ATTACK_RADIUS": 120,
+            "NOTICE_RADIUS": 400
+        },
+        "spirit": {
+            "HEALTH": 100,
+            "EXP": 110,
+            "DAMAGE": 8,
+            "ATTACK_TYPE": "thunder",
+            "ATTACK_SOUND": "../audio/attack/fireball.wav",
+            "SPEED": 1,
+            "RESISTANCE": 3,
+            "ATTACK_RADIUS": 60,
+            "NOTICE_RADIUS": 350
+        },
+        "bamboo": {
+            "HEALTH": 70,
+            "EXP": 120,
+            "DAMAGE": 6,
+            "ATTACK_TYPE": "leaf_attack",
+            "ATTACK_SOUND": "../audio/attack/slash.wav",
+            "SPEED": 3 ,
+            "RESISTANCE": 3,
+            "ATTACK_RADIUS": 50,
+            "NOTICE_RADIUS": 300
+        }
+    },
     "UI": {
         "FONT": "./assets/graphics/font/joystix.ttf",
         "FONT_SIZE": 18,

@@ -1,26 +1,22 @@
 import pygame
-
 from classes.tiles import Tile
-
-from classes.player import Player
-
+from entities.player import Player
 from classes.weapon import Weapon
-
 from debug import debug
-
-from settings import Settings
-
+from settings import settings
 from support import import_csv_layout, import_folder
-
 from random import choice
-
 from ui import UI
+from entities.enemy import Enemy
+import os
 
 
 class Level:
 
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
+
+
         # sprite group setup
         self.visible_sprites = YSortCameraGroup()
         self.obstacles_sprites = pygame.sprite.Group()
@@ -31,25 +27,26 @@ class Level:
         
         #user interface
         self.ui = UI()
-        
 
     def create_map(self):
         ''' create map from csv file '''
+        map_path = os.path.join(os.path.curdir, "assets","map")
         layouts = {
-            'boundary': import_csv_layout('./assets/map/map_FloorBlocks.csv'),
-            'grass': import_csv_layout('./assets/map/map_Grass.csv'),
-            'object': import_csv_layout('./assets/map/map_Objects.csv'),
+            'boundary': import_csv_layout(os.path.join(map_path,"map_FloorBlocks.csv")),
+            'grass': import_csv_layout(os.path.join(map_path, "map_Grass.csv")),
+            'object': import_csv_layout(os.path.join(map_path, "map_Objects.csv")),
+            'entities': import_csv_layout(os.path.join(map_path, "map_Entities.csv"))
         }
         graphics = {
-            'grass': import_folder('./assets/graphics/grass'),
-            'object': import_folder('./assets/graphics/objects'),
+            'grass': import_folder(os.path.join(os.path.curdir, "assets","graphics","grass")),
+            'object': import_folder(os.path.join(os.path.curdir, "assets","graphics","objects")),
         }
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
                 for col_index, col in enumerate(row):
                     if col != '-1':
-                        x = col_index * Settings().TILE_SIZE
-                        y = row_index * Settings().TILE_SIZE
+                        x = col_index * settings.TILE_SIZE
+                        y = row_index * settings.TILE_SIZE
                         if style == 'boundary':
                             Tile(pos=(x, y), groups=[
                                  self.obstacles_sprites], sprite_type=style)
@@ -61,15 +58,22 @@ class Level:
                         elif style == 'object':
                             Tile(pos=(x, y), groups=[
                                  self.visible_sprites, self.obstacles_sprites], sprite_type=style, surface=graphics['object'][int(col)])
-
-        self.player = Player(
-            (1980, 1435), 
-            [self.visible_sprites], 
-            obstacle_sprites=self.obstacles_sprites, 
-            create_atack=self.create_atack, 
-            destroy_attack=self.destroy_attack, 
-            create_magic=self.create_magic
-            )
+                        if style == 'entities':
+                            if col == '394':
+                                self.player = Player(
+                                    (x, y), 
+                                    [self.visible_sprites], 
+                                    obstacle_sprites=self.obstacles_sprites, 
+                                    create_atack=self.create_atack, 
+                                    destroy_attack=self.destroy_attack, 
+                                    create_magic=self.create_magic
+                                )
+                            else:
+                                if col == '390': monster_name = 'bamboo'
+                                elif col == '391': monster_name = 'spirit'
+                                elif col == '392': monster_name = 'raccoon'
+                                else : monster_name = 'squid'
+                                Enemy(monster_name, (x,y), groups=[self.visible_sprites], obstacle_sprites=self.obstacles_sprites)
 
     def create_atack(self):
         self.current_atack = Weapon(self.player, [self.visible_sprites])
@@ -78,7 +82,6 @@ class Level:
         print(style)
         print(strengh)
         print(cost)
-        
         pass
 
     def destroy_attack(self):
@@ -87,35 +90,32 @@ class Level:
         self.current_atack = None
 
     def run(self):
-    	'''update the level and draw'''
-    	self.display_surface.fill(color=self.ui.data.WATER_COLOR)
-    	self.visible_sprites.update()
-    	self.visible_sprites.custom_draw(self.player)
-     
-    	self.ui.display(self.player)
+        '''update the level and draw'''
+        self.display_surface.fill(color=self.ui.data.WATER_COLOR)
+        self.visible_sprites.update()
+        self.visible_sprites.enemy_update(self.player)
+        self.visible_sprites.custom_draw(self.player)
+        self.ui.display(self.player)
 
 
-    
-    
+
 class YSortCameraGroup(pygame.sprite.Group):
 
     def __init__(self):
-
         # general setup
         super().__init__()
         self.display_surface = pygame.display.get_surface()
-
         self.offset = pygame.math.Vector2()
-
         self.half_width = self.display_surface.get_width() // 2
-
         self.half_height = self.display_surface.get_height() // 2
-
         # create floor
-
-        self.floor_surface = pygame.image.load("assets/ground.png").convert()
-
+        self.floor_surface = pygame.image.load(os.path.join(os.path.curdir, "assets","ground.png")).convert()
         self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
+
+    def enemy_update(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)
 
     def custom_draw(self, player):
 

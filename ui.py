@@ -1,10 +1,8 @@
 import pygame
 import os
-from settings import *
+from settings import settings
 
 from collections import namedtuple
-
-settings = Settings()
 
 class UI:
     def __init__(self):
