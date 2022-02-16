@@ -90,12 +90,12 @@ class Level:
         self.current_atack = None
 
     def run(self):
-    	'''update the level and draw'''
-    	self.display_surface.fill(color=self.ui.data.WATER_COLOR)
-    	self.visible_sprites.update()
-    	self.visible_sprites.custom_draw(self.player)
-     
-    	self.ui.display(self.player)
+        '''update the level and draw'''
+        self.display_surface.fill(color=self.ui.data.WATER_COLOR)
+        self.visible_sprites.update()
+        self.visible_sprites.enemy_update(self.player)
+        self.visible_sprites.custom_draw(self.player)
+        self.ui.display(self.player)
 
 
 
@@ -111,6 +111,11 @@ class YSortCameraGroup(pygame.sprite.Group):
         # create floor
         self.floor_surface = pygame.image.load(os.path.join(os.path.curdir, "assets","ground.png")).convert()
         self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
+
+    def enemy_update(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)
 
     def custom_draw(self, player):
 
