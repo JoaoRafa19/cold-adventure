@@ -45,7 +45,7 @@
             "DAMAGE": 6,
             "ATTACK_TYPE": "leaf_attack",
             "ATTACK_SOUND": "../audio/attack/slash.wav",
-            "SPEED": 3 ,
+            "SPEED": 3,
             "RESISTANCE": 3,
             "ATTACK_RADIUS": 50,
             "NOTICE_RADIUS": 300
